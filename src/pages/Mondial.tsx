@@ -6,7 +6,7 @@ import { Game, gameStatus, isLive, formatMatchDate, phaseLabel, getFlagUrl, Stad
 
 // ── Match Card ────────────────────────────────────────────────────────────────
 
-function TeamDisplay({ name, score, isHome }: { name: string; score: number | null; isHome: boolean }) {
+function TeamDisplay({ name, isHome }: { name: string; isHome: boolean }) {
   const flagUrl = getFlagUrl(name);
   return (
     <div className={`flex flex-col items-center gap-2 ${isHome ? 'items-end' : 'items-start'} flex-1`}>
@@ -20,9 +20,6 @@ function TeamDisplay({ name, score, isHome }: { name: string; score: number | nu
           {name}
         </span>
       </div>
-      {score !== null && (
-        <span className="text-2xl font-bold text-gray-900">{score}</span>
-      )}
     </div>
   );
 }
@@ -57,7 +54,7 @@ function MatchCard({ game, stadium }: { game: Game; stadium?: Stadium }) {
 
       {/* Score area */}
       <div className="px-4 py-5 flex items-center gap-3">
-        <TeamDisplay name={homeName} score={game.home_score} isHome={true} />
+        <TeamDisplay name={homeName} isHome={true} />
 
         <div className="flex flex-col items-center gap-1 min-w-[48px]">
           {status === 'upcoming' ? (
@@ -75,7 +72,7 @@ function MatchCard({ game, stadium }: { game: Game; stadium?: Stadium }) {
           )}
         </div>
 
-        <TeamDisplay name={awayName} score={game.away_score} isHome={false} />
+        <TeamDisplay name={awayName} isHome={false} />
       </div>
 
       {/* Stadium */}

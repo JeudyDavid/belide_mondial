@@ -143,7 +143,7 @@ function PlayerDot({ slot, selected, onClick }: {
       style={{ left: `${slot.x}%`, top: `${slot.y}%` }}
     >
       <div
-        className={`w-24 h-24 rounded-full overflow-hidden border-[3px] shadow-lg transition-all flex items-center justify-center
+        className={`w-12 h-12 md:w-24 md:h-24 rounded-full overflow-hidden border-2 md:border-[3px] shadow-lg transition-all flex items-center justify-center
           ${selected ? 'border-yellow-400 scale-110 ring-2 ring-yellow-300' : 'border-white group-hover:border-yellow-300'}`}
         style={{ background: 'linear-gradient(135deg, rgb(0,32,159), rgb(0,0,100))' }}
       >
@@ -155,7 +155,7 @@ function PlayerDot({ slot, selected, onClick }: {
             onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         ) : (
-          <span className="text-white text-[10px] font-bold">{slot.role}</span>
+          <span className="text-white text-[8px] md:text-[10px] font-bold">{slot.role}</span>
         )}
       </div>
       <div
@@ -163,9 +163,9 @@ function PlayerDot({ slot, selected, onClick }: {
         style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(2px)' }}
       >
         {player && (
-          <span className="text-[9px] font-bold text-white block leading-tight">#{player.number}</span>
+          <span className="text-[7px] md:text-[9px] font-bold text-white block leading-tight">#{player.number}</span>
         )}
-        <span className="text-white text-[10px] font-semibold leading-tight block" style={{ maxWidth: 64 }}>
+        <span className="text-white text-[8px] md:text-[10px] font-semibold leading-tight block" style={{ maxWidth: 48 }}>
           {player ? player.name.split(' ').pop() : slot.role}
         </span>
       </div>

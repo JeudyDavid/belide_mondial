@@ -284,7 +284,7 @@ export default function Formation() {
 
     ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, W, 52);
     ctx.fillStyle = '#ffffff'; ctx.font = 'bold 18px Montserrat, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(` Grenadiers · ${formation}`, W / 2, 33);
+    ctx.fillText(`🇭🇹 Grenadiers · ${formation}`, W / 2, 33);
 
     const loadImg = (src: string): Promise<HTMLImageElement> =>
       new Promise(res => {
@@ -361,7 +361,7 @@ export default function Formation() {
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
-        title: ` Grenadiers · ${formation}`,
+        title: `🇭🇹 Grenadiers · ${formation}`,
         text: shareText,
       });
     } else {
@@ -543,7 +543,7 @@ export default function Formation() {
               <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-2 z-20"
                 style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
                 <span className="text-white text-xs font-bold tracking-wide">
-                   Grenadiers · {formation}
+                  🇭🇹 Grenadiers · {formation}
                 </span>
               </div>
 

@@ -223,19 +223,6 @@ export default function Mondial() {
 
   const liveFixtures = fixtures.filter(isLive);
 
-  const groupedByGroup = useMemo(() => {
-    if (filter !== 'tous') return null;
-    const map: Record<string, Fixture[]> = {};
-    for (const f of fixtures) {
-      if (getPhase(f.league.round) !== 'group') continue;
-      if (!f.league.group) continue;
-      const key = f.league.group;
-      if (!map[key]) map[key] = [];
-      map[key].push(f);
-    }
-    return map;
-  }, [fixtures, filter]);
-
   const standingsByGroup = useMemo(() => {
     const map: Record<string, StandingEntry[]> = {};
     for (const group of standings) {
@@ -243,6 +230,32 @@ export default function Mondial() {
     }
     return map;
   }, [standings]);
+
+  // Map teamId → groupName depuis les classements (fallback si league.group est null)
+  const teamGroupMap = useMemo(() => {
+    const map: Record<number, string> = {};
+    for (const group of standings) {
+      for (const entry of group) {
+        map[entry.team.id] = entry.group;
+      }
+    }
+    return map;
+  }, [standings]);
+
+  const groupedByGroup = useMemo(() => {
+    if (filter !== 'tous') return null;
+    const map: Record<string, Fixture[]> = {};
+    for (const f of fixtures) {
+      if (getPhase(f.league.round) !== 'group') continue;
+      const key = f.league.group
+        || teamGroupMap[f.teams.home.id]
+        || teamGroupMap[f.teams.away.id];
+      if (!key) continue;
+      if (!map[key]) map[key] = [];
+      map[key].push(f);
+    }
+    return map;
+  }, [fixtures, filter, teamGroupMap]);
 
   const eliminationFixtures = useMemo(() =>
     fixtures.filter(f => getPhase(f.league.round) !== 'group'),
@@ -253,11 +266,14 @@ export default function Mondial() {
     <div className="min-h-screen">
       <Header />
 
-      {/* CDM GIF banner */}
+      {/* CDM video banner */}
       <div className="w-full overflow-hidden" style={{ maxHeight: 320 }}>
-        <img
-          src="/CDM GIF.gif"
-          alt="Coupe du Monde 2026"
+        <video
+          src="/CDM GIF.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full object-cover"
           style={{ display: 'block' }}
         />

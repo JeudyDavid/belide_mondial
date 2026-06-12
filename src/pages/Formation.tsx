@@ -284,7 +284,7 @@ export default function Formation() {
 
     ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, W, 52);
     ctx.fillStyle = '#ffffff'; ctx.font = 'bold 18px Montserrat, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(`🇭🇹 Grenadiers 2026 · ${formation}`, W / 2, 33);
+    ctx.fillText(`🇭🇹 Grenadiers · ${formation}`, W / 2, 33);
 
     const loadImg = (src: string): Promise<HTMLImageElement> =>
       new Promise(res => {
@@ -361,7 +361,7 @@ export default function Formation() {
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
-        title: `🇭🇹 Grenadiers 2026 · ${formation}`,
+        title: `🇭🇹 Grenadiers · ${formation}`,
         text: shareText,
       });
     } else {
@@ -397,7 +397,7 @@ export default function Formation() {
           🇭🇹 Compose ta Sélection
         </h1>
         <p className="text-purple-200 text-sm">
-          Grenadiers 2026 — Groupe C
+          Grenadiers — Groupe C
         </p>
       </div>
 

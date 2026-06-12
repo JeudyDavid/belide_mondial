@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/wc-api/:path*",
+      "destination": "https://worldcup26.ir/:path*"
+    },
+    {
+      "source": "/grenadiers-img/:path*",
+      "destination": "https://grenadiers2026.com/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

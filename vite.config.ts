@@ -19,6 +19,11 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/grenadiers-img/, ''),
       },
+      '/football-api': {
+        target: 'https://v3.football.api-sports.io',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/football-api/, ''),
+      },
     },
   },
   plugins: [

@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/football-api/:path*",
+      "destination": "https://v3.football.api-sports.io/:path*"
+    },
+    {
       "source": "/wc-api/:path*",
       "destination": "https://worldcup26.ir/:path*"
     },

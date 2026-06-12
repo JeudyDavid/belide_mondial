@@ -1,44 +1,37 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getGames, getTeams, getStadiums, Game, Team, Stadium } from '@/services/worldcupApi';
+import { getFixtures, getStandings, Fixture, StandingEntry } from '@/services/worldcupApi';
 
 export function useWorldCupData() {
-  const [games, setGames] = useState<Game[]>([]);
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [stadiums, setStadiums] = useState<Stadium[]>([]);
+  const [fixtures, setFixtures] = useState<Fixture[]>([]);
+  const [standings, setStandings] = useState<StandingEntry[][]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGames = useCallback(async () => {
+  const fetchFixtures = useCallback(async () => {
     try {
-      const data = await getGames();
-      setGames(data);
+      setFixtures(await getFixtures());
     } catch {
-      // silently update — don't reset error on polling
+      // silently ignore polling errors
     }
   }, []);
 
   useEffect(() => {
     async function init() {
       try {
-        const [g, t, s] = await Promise.all([getGames(), getTeams(), getStadiums()]);
-        setGames(g);
-        setTeams(t);
-        setStadiums(s);
+        const [f, s] = await Promise.all([getFixtures(), getStandings()]);
+        setFixtures(f);
+        setStandings(s);
       } catch (e) {
-        setError("Impossible de charger les données. Veuillez réessayer.");
+        setError('Impossible de charger les données. Veuillez réessayer.');
         console.error(e);
       } finally {
         setLoading(false);
       }
     }
     init();
-
-    const interval = setInterval(fetchGames, 30_000);
+    const interval = setInterval(fetchFixtures, 30_000);
     return () => clearInterval(interval);
-  }, [fetchGames]);
+  }, [fetchFixtures]);
 
-  const stadiumMap = Object.fromEntries(stadiums.map(s => [s.id, s]));
-  const teamMap = Object.fromEntries(teams.map(t => [t.id, t]));
-
-  return { games, teams, stadiums, stadiumMap, teamMap, loading, error };
+  return { fixtures, standings, loading, error };
 }

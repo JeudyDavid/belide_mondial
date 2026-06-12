@@ -228,7 +228,8 @@ export default function Mondial() {
     const map: Record<string, Fixture[]> = {};
     for (const f of fixtures) {
       if (getPhase(f.league.round) !== 'group') continue;
-      const key = f.league.group ?? 'Autres';
+      if (!f.league.group) continue;
+      const key = f.league.group;
       if (!map[key]) map[key] = [];
       map[key].push(f);
     }

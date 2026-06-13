@@ -586,6 +586,9 @@ export default function Formation() {
                   <p className="text-xs text-gray-400">Tous les joueurs sont sur le terrain</p>
                 )}
               </div>
+              <p className="text-xs text-gray-500 mt-3">
+                © Images des Grenadiers : Carel Pedre / grenadiers2026.com
+              </p>
             </div>
           </div>
         </div>

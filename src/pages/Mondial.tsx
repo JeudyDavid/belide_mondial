@@ -207,10 +207,11 @@ function GroupSection({ groupName, fixtures, standing, onSelect }: {
 
 // ── Filter tabs ───────────────────────────────────────────────────────────────
 
-type Filter = 'tous' | 'classements' | 'elimination';
+type Filter = 'tous' | 'endirect' | 'classements' | 'elimination';
 
 const FILTERS: { id: Filter; label: string }[] = [
   { id: 'tous', label: 'Tous les matchs' },
+  { id: 'endirect', label: 'En direct' },
   { id: 'classements', label: 'Classements' },
   { id: 'elimination', label: 'Phases éliminatoires' },
 ];
@@ -318,7 +319,17 @@ export default function Mondial() {
                 }`}
                 style={filter === f.id ? { background: 'linear-gradient(90deg, rgb(115,2,97), rgb(54,4,46))' } : {}}
               >
-                {f.label}
+                <span className="flex items-center gap-1.5">
+                  {f.id === 'endirect' && liveFixtures.length > 0 && (
+                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                  )}
+                  {f.label}
+                  {f.id === 'endirect' && liveFixtures.length > 0 && (
+                    <span className="ml-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 leading-none">
+                      {liveFixtures.length}
+                    </span>
+                  )}
+                </span>
               </button>
             ))}
           </div>
@@ -364,6 +375,25 @@ export default function Mondial() {
                       onSelect={setSelectedFixture}
                     />
                   ))}
+              </div>
+            )}
+
+            {/* En direct */}
+            {filter === 'endirect' && (
+              <div>
+                {liveFixtures.length === 0 ? (
+                  <div className="text-center py-20">
+                    <div className="text-4xl mb-4">⚽</div>
+                    <p className="text-white font-semibold text-lg">Aucun match en direct</p>
+                    <p className="text-white/60 text-sm mt-1">Les matchs en cours apparaîtront ici</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {liveFixtures.map(f => (
+                      <MatchCard key={f.fixture.id} fixture={f} onClick={() => setSelectedFixture(f)} />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 

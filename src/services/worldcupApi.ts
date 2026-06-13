@@ -32,7 +32,6 @@ export interface Fixture {
   league: {
     id: number;
     round: string;
-    group: string | null;
   };
   teams: {
     home: { id: number; name: string; logo: string; winner: boolean | null };
@@ -178,9 +177,6 @@ export function formatMatchDate(dateStr: string): string {
   }
 }
 
-export function groupLetter(f: Fixture): string {
-  return f.league.group?.replace('Group ', '') ?? '';
-}
 
 export function matchday(f: Fixture): string {
   const match = f.league.round.match(/(\d+)$/);

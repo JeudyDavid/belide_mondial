@@ -6,7 +6,7 @@ import { useWorldCupData } from '@/hooks/useWorldCupData';
 import {
   Fixture, StandingEntry,
   fixtureStatus, isLive, formatMatchDate, phaseLabel, liveLabel,
-  getPhase, groupLetter, matchday,
+  getPhase, matchday,
 } from '@/services/worldcupApi';
 
 // ── Team logo ─────────────────────────────────────────────────────────────────
@@ -29,11 +29,12 @@ function TeamLogo({ logo, name, reverse }: { logo: string; name: string; reverse
 
 // ── Match Card ────────────────────────────────────────────────────────────────
 
-function MatchCard({ fixture, onClick }: { fixture: Fixture; onClick: () => void }) {
+function MatchCard({ fixture, onClick, groupOverride }: { fixture: Fixture; onClick: () => void; groupOverride?: string }) {
   const status = fixtureStatus(fixture);
   const live = isLive(fixture);
   const phase = getPhase(fixture.league.round);
   const md = matchday(fixture);
+  const letter = groupOverride?.replace('Group ', '') ?? '';
 
   const htHome = fixture.score.halftime.home;
   const htAway = fixture.score.halftime.away;
@@ -61,7 +62,7 @@ function MatchCard({ fixture, onClick }: { fixture: Fixture; onClick: () => void
         </span>
         <span className="uppercase tracking-wide">
           {phase === 'group'
-            ? `Groupe ${groupLetter(fixture)}${md ? ` · J${md}` : ''}`
+            ? `Groupe ${letter}${md ? ` · J${md}` : ''}`
             : phaseLabel(fixture.league.round)}
         </span>
       </div>
@@ -194,7 +195,7 @@ function GroupSection({ groupName, fixtures, standing, onSelect }: {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
         {fixtures.map(f => (
-          <MatchCard key={f.fixture.id} fixture={f} onClick={() => onSelect(f)} />
+          <MatchCard key={f.fixture.id} fixture={f} onClick={() => onSelect(f)} groupOverride={groupName} />
         ))}
       </div>
       {standing && standing.length > 0 && (
@@ -226,17 +227,21 @@ export default function Mondial() {
   const standingsByGroup = useMemo(() => {
     const map: Record<string, StandingEntry[]> = {};
     for (const group of standings) {
-      if (group[0]) map[group[0].group] = group;
+      const name = group[0]?.group ?? '';
+      if (!name || name === 'Group Stage' || !/^Group [A-Z]$/.test(name)) continue;
+      map[name] = group;
     }
     return map;
   }, [standings]);
 
-  // Map teamId → groupName depuis les classements (fallback si league.group est null)
+  // Map teamId → groupName — on ignore les entrées parasites "Group Stage"
   const teamGroupMap = useMemo(() => {
     const map: Record<number, string> = {};
     for (const group of standings) {
+      const name = group[0]?.group ?? '';
+      if (!name || name === 'Group Stage' || !/^Group [A-Z]$/.test(name)) continue;
       for (const entry of group) {
-        map[entry.team.id] = entry.group;
+        map[entry.team.id] = name;
       }
     }
     return map;
@@ -247,9 +252,7 @@ export default function Mondial() {
     const map: Record<string, Fixture[]> = {};
     for (const f of fixtures) {
       if (getPhase(f.league.round) !== 'group') continue;
-      const key = f.league.group
-        || teamGroupMap[f.teams.home.id]
-        || teamGroupMap[f.teams.away.id];
+      const key = teamGroupMap[f.teams.home.id] || teamGroupMap[f.teams.away.id];
       if (!key) continue;
       if (!map[key]) map[key] = [];
       map[key].push(f);

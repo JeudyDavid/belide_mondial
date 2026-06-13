@@ -374,9 +374,14 @@ export default function Mondial() {
                   <p className="text-center text-white py-20">Classements non disponibles</p>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {standings.map((group, i) => (
-                      <StandingsTable key={i} group={group} />
-                    ))}
+                    {standings
+                      .filter(group => {
+                        const name = group[0]?.group ?? '';
+                        return name && name !== 'Group Stage' && /^Group [A-Z]$/.test(name);
+                      })
+                      .map((group, i) => (
+                        <StandingsTable key={i} group={group} />
+                      ))}
                   </div>
                 )}
               </div>

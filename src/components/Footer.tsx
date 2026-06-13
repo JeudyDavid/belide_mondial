@@ -78,7 +78,7 @@ const Footer = () => {
         <div className="border-t border-white mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-purple-200 font-inter text-sm">
-              © 2025 Belide Magazine. Tous droits réservés.
+              © 2026 Belide Magazine. Tous droits réservés.
             </p>
             <div className="flex space-x-6 text-purple-200 text-sm">
               <a href="/legal-notice" className="hover:text-yellow-400 transition-colors">Politique de confidentialité</a>

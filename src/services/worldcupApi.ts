@@ -143,7 +143,7 @@ export function getPhase(round: string): string {
 export function phaseLabel(round: string): string {
   const labels: Record<string, string> = {
     group: 'Phase de groupes',
-    r32: '32e de finale',
+    r32: '16e de finale',
     r16: '8e de finale',
     qf: 'Quart de finale',
     sf: 'Demi-finale',

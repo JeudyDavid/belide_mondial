@@ -273,7 +273,7 @@ export default function Mondial() {
       {/* CDM video banner */}
       <div className="w-full overflow-hidden" style={{ maxHeight: 320 }}>
         <video
-          src="/CDM GIF.mp4"
+          src="/BMSport.mp4"
           autoPlay
           loop
           muted
